@@ -1,0 +1,247 @@
+/*
+ * Komponentbiblioteket. Betydningsfarger kommer alltid fra tokens; råverdier
+ * står bare i dekorative gradienter og skygger hentet fra prototypen.
+ */
+
+.ev-eyebrow {
+  font-family: var(--ev-font-mono);
+  font-size: var(--ev-text-2xs);
+  letter-spacing: var(--ev-tracking-label);
+  text-transform: uppercase;
+  color: var(--ev-text-muted);
+}
+
+/* Knapp */
+.ev-button {
+  font: inherit;
+  font-size: var(--ev-text-md);
+  color: var(--ev-text);
+  padding: 11px 20px;
+  border-radius: var(--ev-radius-md);
+  border: 1px solid var(--ev-line-strong);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color var(--ev-duration-fast), background var(--ev-duration-fast), opacity var(--ev-duration-fast);
+}
+.ev-button:hover:not(:disabled) {
+  border-color: var(--ev-blue-bright);
+}
+.ev-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.ev-button--busy:disabled {
+  cursor: progress;
+}
+.ev-button--primary {
+  border-color: rgba(147, 197, 253, 0.7);
+  background: linear-gradient(120deg, rgba(30, 64, 116, 0.75), rgba(14, 32, 60, 0.6));
+}
+.ev-button--secondary {
+  background: var(--ev-blue-wash);
+}
+.ev-button--ghost {
+  border-color: transparent;
+  color: var(--ev-text-muted);
+}
+.ev-button--ghost:hover:not(:disabled) {
+  color: var(--ev-text);
+  border-color: var(--ev-line);
+}
+.ev-button--danger {
+  border-color: var(--ev-system-error-border);
+}
+
+/* Sitatpille */
+.ev-cite {
+  position: relative;
+  display: inline-flex;
+}
+.ev-cite__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ev-font-mono);
+  font-size: var(--ev-text-xs);
+  letter-spacing: 0.06em;
+  color: var(--ev-text-cite);
+  background: var(--ev-blue-wash);
+  border: 1px solid var(--ev-line-strong);
+  border-radius: var(--ev-radius-pill);
+  padding: 5px 12px 5px 10px;
+  cursor: pointer;
+  transition: border-color var(--ev-duration-fast), transform var(--ev-duration-fast);
+}
+.ev-cite__pill:hover {
+  border-color: var(--ev-blue-bright);
+  transform: translateY(-1px);
+}
+.ev-cite__glyph {
+  color: #7fb3ff;
+}
+.ev-cite__preview {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  max-width: 340px;
+  padding: 10px 12px;
+  border-radius: var(--ev-radius-sm);
+  border: 1px solid var(--ev-line-strong);
+  background: var(--ev-surface-raised);
+  color: var(--ev-text-soft);
+  font-size: var(--ev-text-sm);
+  line-height: 1.5;
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.9);
+}
+
+/* Merke */
+.ev-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--ev-font-mono);
+  font-size: var(--ev-text-2xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: var(--ev-radius-xs);
+  border: 1px solid currentColor;
+}
+.ev-badge--green { color: var(--ev-green); background: var(--ev-green-wash); }
+.ev-badge--yellow { color: var(--ev-yellow); background: var(--ev-yellow-wash); }
+.ev-badge--red { color: var(--ev-red); background: var(--ev-red-wash); }
+.ev-badge--blue { color: var(--ev-blue); background: var(--ev-blue-wash); }
+.ev-badge--muted { color: var(--ev-text-muted); background: transparent; }
+
+/* Maskinforslag */
+.ev-suggestion {
+  border: var(--ev-suggestion-border);
+  border-radius: var(--ev-radius-lg);
+  background: rgba(8, 16, 32, 0.4);
+  padding: var(--ev-space-4) var(--ev-space-5);
+}
+.ev-suggestion__label {
+  font-family: var(--ev-font-mono);
+  font-size: var(--ev-text-2xs);
+  letter-spacing: var(--ev-tracking-label);
+  text-transform: uppercase;
+  color: var(--ev-blue-bright);
+  margin-bottom: var(--ev-space-2);
+}
+.ev-suggestion__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ev-space-2);
+  margin-top: var(--ev-space-3);
+}
+
+/* Panel */
+.ev-panel {
+  border-radius: var(--ev-radius-xl);
+  border: 1px solid var(--ev-line);
+  background: linear-gradient(160deg, rgba(14, 32, 58, 0.62), rgba(6, 14, 28, 0.45));
+  padding: var(--ev-space-6);
+}
+.ev-panel--raised {
+  background: var(--ev-surface-raised);
+}
+.ev-panel__title {
+  font-family: var(--ev-font-display);
+  font-weight: 400;
+  font-size: var(--ev-text-xl);
+  line-height: 1.15;
+  margin: var(--ev-space-2) 0 var(--ev-space-4);
+}
+
+/* Tilstander */
+.ev-state {
+  max-width: 640px;
+  padding: var(--ev-space-8) var(--ev-space-6);
+  border-radius: var(--ev-radius-xl);
+}
+.ev-state--empty {
+  border: 1px dashed var(--ev-line-strong);
+  background: rgba(8, 16, 32, 0.4);
+}
+.ev-state--error {
+  border: 1px solid var(--ev-system-error-border);
+  background: var(--ev-system-error-bg);
+}
+.ev-state__title {
+  font-family: var(--ev-font-display);
+  font-weight: 400;
+  font-size: var(--ev-text-xl);
+  line-height: 1.2;
+  margin: 0 0 var(--ev-space-3);
+}
+.ev-state__text {
+  color: var(--ev-text-muted);
+  margin: 0;
+}
+.ev-state__action {
+  margin-top: var(--ev-space-5);
+}
+.ev-state__trace {
+  margin-top: var(--ev-space-5);
+  font-family: var(--ev-font-mono);
+  font-size: var(--ev-text-2xs);
+  color: var(--ev-text-faint);
+}
+.ev-partial {
+  display: flex;
+  gap: var(--ev-space-3);
+  align-items: center;
+  padding: var(--ev-space-3) var(--ev-space-4);
+  border: 1px solid rgba(227, 179, 65, 0.45);
+  border-radius: var(--ev-radius-md);
+  background: var(--ev-yellow-wash);
+  color: var(--ev-text-soft);
+}
+.ev-partial__glyph {
+  color: var(--ev-yellow);
+}
+
+/* Skjelett */
+.ev-skeleton {
+  display: grid;
+  gap: var(--ev-space-3);
+  max-width: 640px;
+}
+.ev-skeleton__bar {
+  position: relative;
+  overflow: hidden;
+  height: 14px;
+  border-radius: var(--ev-radius-xs);
+  background: rgba(96, 165, 250, 0.1);
+}
+.ev-skeleton__bar--short {
+  width: 60%;
+}
+.ev-skeleton__bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.18), transparent);
+  animation: ev-sweep 1.6s ease-in-out infinite;
+}
+.ev-skeleton--page .ev-skeleton__bar { height: 18px; }
+.ev-skeleton--canvas .ev-skeleton__bar { height: 64px; }
+.ev-skeleton__slow {
+  color: var(--ev-text-muted);
+  font-size: var(--ev-text-sm);
+  margin: var(--ev-space-2) 0 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ev-skeleton__bar::after { animation: none; }
+}
+
+/* Byggstempel */
+.ev-buildstamp {
+  font-family: var(--ev-font-mono);
+  font-size: var(--ev-text-2xs);
+  letter-spacing: 0.06em;
+  color: var(--ev-text-faint);
+}

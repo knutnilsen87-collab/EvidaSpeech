@@ -1,0 +1,19 @@
+node_modules/
+dist/
+coverage/
+*.log
+.env
+.env.*
+
+# Python (talemotor-oppstart)
+.venv/
+__pycache__/
+*.pyc
+
+# Talemotorens nøkkel, økter og innsynslogg skal aldri i git
+speech/.data/
+
+# Lydopptak og transkripsjoner fra målinger
+speech/recordings/
+*.wav
+*.webm

@@ -1,0 +1,93 @@
+/*
+ * EVIDA design tokens.
+ *
+ * Kilde: «UI-UX og backend-integrasjon» kap. 13 (Visuelt språk) og prototypen
+ * «EVIDA Prototype standalone-src.html». Der de er uenige, gjelder dokumentet
+ * (se docs/DESIGN_TOKENS.md). Fargene bærer betydning og skal ikke velges fritt
+ * per skjerm: bruk de semantiske tokenene, ikke råverdiene.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Flater */
+  --ev-bg: #03080f;               /* dyp natt, hele arbeidsflaten */
+  --ev-bg-deep: #02060e;          /* bak arbeidsflaten (prototypens body) */
+  --ev-surface: #08111f;          /* paneler */
+  --ev-surface-raised: #0b1524;   /* kort */
+  --ev-surface-glass: rgba(8, 17, 32, 0.86);
+  --ev-line: rgba(96, 165, 250, 0.18);        /* hårlinjer og rammer */
+  --ev-line-strong: rgba(96, 165, 250, 0.3);
+  --ev-line-focus: #93c5fd;
+  --ev-grid: rgba(96, 165, 250, 0.055);
+
+  /* Tekst */
+  --ev-text: #e6edf7;
+  --ev-text-soft: #dce8f8;
+  --ev-text-muted: #93a9c4;       /* sekundær tekst */
+  --ev-text-faint: #7e97b4;       /* metadata; bare på store/monospace-etiketter */
+  --ev-text-cite: #bfd6f2;
+
+  /* Betydningsfarger. Brukes aldri alene: hver status har også tekst eller form. */
+  --ev-blue: #60a5fa;             /* systemets egen stemme, navigasjon, lenker */
+  --ev-blue-bright: #93c5fd;
+  --ev-blue-deep: #3b82f6;
+  --ev-green: #6ee7c8;            /* bekreftet, kildebelagt, vi fører — aldri «vellykket handling» */
+  --ev-yellow: #e3b341;           /* usikkert, trenger avklaring */
+  --ev-red: #f0785c;              /* motstrid, mangler kilde, de fører — aldri «systemfeil» */
+  --ev-violet: #c9aef7;           /* rettssalen (prototypen) */
+
+  /* Tonede bakgrunner for merker */
+  --ev-blue-wash: rgba(96, 165, 250, 0.12);
+  --ev-green-wash: rgba(110, 231, 200, 0.1);
+  --ev-yellow-wash: rgba(227, 179, 65, 0.12);
+  --ev-red-wash: rgba(240, 120, 92, 0.12);
+
+  /* Systemfeil: nøytral flate med rød ramme, slik at nettverksfeil ikke forveksles med bevisproblem */
+  --ev-system-error-border: rgba(240, 120, 92, 0.55);
+  --ev-system-error-bg: var(--ev-surface-raised);
+
+  /* EVIDA-forslag (maskinforslag), ikke bekreftet ennå */
+  --ev-suggestion-border: 2px dashed rgba(147, 197, 253, 0.55);
+
+  /* Typografi */
+  --ev-font-display: "Instrument Serif", Georgia, "Times New Roman", serif;   /* overskrifter, sakstitler */
+  --ev-font-ui: "Geist Sans", system-ui, "Segoe UI", sans-serif;              /* brødtekst og grensesnitt */
+  --ev-font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;        /* bilagsnr, koder, metadata, tall */
+
+  --ev-text-2xs: 0.625rem;   /* 10px  monospace-etiketter */
+  --ev-text-xs: 0.6875rem;   /* 11px */
+  --ev-text-sm: 0.8125rem;   /* 13px */
+  --ev-text-md: 0.9375rem;   /* 15px  brødtekst */
+  --ev-text-lg: 1.0625rem;   /* 17px */
+  --ev-text-xl: 1.6875rem;   /* 27px  skjermtitler */
+  --ev-text-2xl: 1.875rem;   /* 30px  logo/sakstittel */
+  --ev-tracking-label: 0.14em;
+
+  /* Rom og form */
+  --ev-space-1: 4px;
+  --ev-space-2: 8px;
+  --ev-space-3: 12px;
+  --ev-space-4: 16px;
+  --ev-space-5: 20px;
+  --ev-space-6: 26px;
+  --ev-space-8: 34px;
+  --ev-radius-xs: 6px;      /* sitatpille (rektangulær) */
+  --ev-radius-sm: 8px;
+  --ev-radius-md: 10px;     /* knapper, navigasjon */
+  --ev-radius-lg: 14px;     /* kort */
+  --ev-radius-xl: 18px;     /* paneler */
+  --ev-radius-pill: 999px;
+
+  --ev-shadow-glow: 0 0 0 1px rgba(96, 165, 250, 0.35), 0 0 34px -12px rgba(59, 130, 246, 0.65);
+  --ev-focus-ring: 0 0 0 2px var(--ev-bg), 0 0 0 4px var(--ev-line-focus);
+
+  --ev-duration-fast: 0.18s;
+  --ev-duration: 0.35s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ev-duration-fast: 0s;
+    --ev-duration: 0s;
+  }
+}
