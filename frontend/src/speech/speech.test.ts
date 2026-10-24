@@ -149,7 +149,7 @@ describe("transport", () => {
 
   it("bygger ws-adresse med nøkkel og bruker", () => {
     const t = new EngineTransport(undefined, memoryStore("k1"));
-    expect(t.streamUrl("advokat")).toBe("ws://127.0.0.1:8765/v1/stream?token=k1&user=advokat");
+    expect(t.streamUrl("advokat")).toBe("ws://127.0.0.1:8766/v1/stream?token=k1&user=advokat");
     expect(new EngineTransport(undefined, memoryStore()).streamUrl()).toBeNull();
   });
 

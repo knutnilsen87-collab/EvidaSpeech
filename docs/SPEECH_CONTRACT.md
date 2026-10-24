@@ -3,7 +3,7 @@
 EvidaSpeech snakker med talemotoren `nsb-engine` fra NorwegianSpeechBase, versjon 0.2.x. Protokollen er motorens egen (NorwegianSpeechBase `docs/ENGINE.md`, «API (versjon 1)»). Her står bare det EvidaSpeech bruker, og reglene vi legger på toppen.
 
 ```
-Mikrofon ─ AudioWorklet (16 kHz mono PCM16) ─WS─▶ nsb-engine på 127.0.0.1:8765
+Mikrofon ─ AudioWorklet (16 kHz mono PCM16) ─WS─▶ nsb-engine på 127.0.0.1:8766
                                                     ├ ekte:  speech\RUN_ENGINE.cmd       (NB-Whisper på GPU)
                                                     └ mock:  speech\RUN_MOCK_ENGINE.cmd  (skriptet modell)
 ```

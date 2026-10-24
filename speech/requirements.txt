@@ -7,3 +7,4 @@ websockets==17.2
 cryptography==50.0.2
 httpx==0.28.1
 pytest==8.4.2
+sounddevice==0.5.2  # bare for opptak i fase 2b

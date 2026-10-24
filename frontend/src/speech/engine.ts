@@ -4,7 +4,7 @@
  */
 
 export const TOKEN_STORAGE_KEY = "evidaspeech.nsbEngineToken";
-export const DEFAULT_ENGINE_URL = "http://127.0.0.1:8765";
+export const DEFAULT_ENGINE_URL = "http://127.0.0.1:8766";
 
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
 

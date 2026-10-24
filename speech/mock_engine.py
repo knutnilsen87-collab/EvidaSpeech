@@ -16,7 +16,7 @@ ikke ``endpoint``. Ytringen avsluttes når klienten sender ``{"type": "end"}``
 (push-to-talk). Manus over omtrent 45 ord blir kuttet når motoren trimmer
 bufferen etter 20 sekunder.
 
-    python speech/mock_engine.py            # http://127.0.0.1:8765
+    python speech/mock_engine.py            # http://127.0.0.1:8766
 """
 
 from __future__ import annotations
@@ -138,7 +138,7 @@ def build_app(backend: ScriptedBackend, *, data_root: Path, port: int = 8765, al
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="nsb-engine med skriptet modell (mock)")
-    ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--port", type=int, default=8766)
     ap.add_argument("--data-dir", default=str(Path(__file__).resolve().parent / ".data" / "mock"))
     ap.add_argument("--allow-origin", action="append", default=None, help="standard: EvidaSpeech på 5174")
     ap.add_argument("--script-file", help="ett manus per linje, brukes i rekkefølge")
