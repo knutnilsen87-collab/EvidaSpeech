@@ -1,0 +1,9 @@
+# Mock-motoren og testene. Samme versjoner som NorwegianSpeechBase .venv-bench.
+# Den ekte motoren kjøres med NorwegianSpeechBase sin egen tolk (se run_engine.ps1).
+numpy==2.4.6
+fastapi==0.146.0
+uvicorn==0.54.0
+websockets==17.2
+cryptography==50.0.2
+httpx==0.28.1
+pytest==8.4.2

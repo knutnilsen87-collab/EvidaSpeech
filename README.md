@@ -21,7 +21,19 @@ npm run dev        # http://127.0.0.1:5174
 
 Byggstempelet nederst i appen viser commit og byggetidspunkt.
 
+### Talemotor
+
+```powershell
+py -3.11 -m venv speech\.venv
+speech\.venv\Scripts\pip install -r speech\requirements.txt
+speech\RUN_MOCK_ENGINE.cmd        # skriptet modell, ingen GPU
+speech\RUN_ENGINE.cmd             # ekte modell (NB-Whisper) på GPU
+```
+
+Tester: `speech\.venv\Scripts\python -B -m pytest` i `speech\`, og kontraktstesten mot kjørende mock: `speech\run_contract_check.ps1`.
+
 ## Dokumentasjon
 
 - [Design tokens](docs/DESIGN_TOKENS.md)
+- [Talegrensesnittet](docs/SPEECH_CONTRACT.md)
 - [Fasestatus](docs/progress/)

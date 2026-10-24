@@ -1,0 +1,341 @@
+{
+ "engine_version": "0.2.0",
+ "script": "Etter paragraf to hundre og syttien? har saksøker krav punktum",
+ "start": {
+  "type": "start",
+  "hotwords": "Kirkerud, Ås",
+  "format": "legal"
+ },
+ "messages": [
+  {
+   "type": "update",
+   "committed": [],
+   "tentative": [
+    {
+     "text": "Etter",
+     "start": 0.0,
+     "end": 0.35,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "paragraf",
+     "start": 0.4,
+     "end": 0.75,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ],
+   "text": "",
+   "tentative_text": "Etter paragraf",
+   "preview": "Etter paragraf",
+   "endpoint": false,
+   "audio_end": 1.0
+  },
+  {
+   "type": "update",
+   "committed": [
+    {
+     "text": "Etter",
+     "start": 0.0,
+     "end": 0.35,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "paragraf",
+     "start": 0.4,
+     "end": 0.75,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ],
+   "tentative": [
+    {
+     "text": "to",
+     "start": 0.8,
+     "end": 1.15,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "hundre",
+     "start": 1.2,
+     "end": 1.55,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "og",
+     "start": 1.6,
+     "end": 1.95,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ],
+   "text": "Etter paragraf",
+   "tentative_text": "to hundre og",
+   "preview": "Etter § 200 og",
+   "endpoint": false,
+   "audio_end": 2.0
+  },
+  {
+   "type": "update",
+   "committed": [
+    {
+     "text": "to",
+     "start": 0.8,
+     "end": 1.15,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "hundre",
+     "start": 1.2,
+     "end": 1.55,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "og",
+     "start": 1.6,
+     "end": 1.95,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ],
+   "tentative": [
+    {
+     "text": "syttien",
+     "start": 2.0,
+     "end": 2.35,
+     "probability": 0.3,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": true
+    },
+    {
+     "text": "har",
+     "start": 2.4,
+     "end": 2.75,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ],
+   "text": "Etter § 200 og",
+   "tentative_text": "syttien har",
+   "preview": "Etter § 271 har",
+   "endpoint": false,
+   "audio_end": 3.0
+  },
+  {
+   "type": "update",
+   "committed": [
+    {
+     "text": "syttien",
+     "start": 2.0,
+     "end": 2.35,
+     "probability": 0.3,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": true
+    },
+    {
+     "text": "har",
+     "start": 2.4,
+     "end": 2.75,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ],
+   "tentative": [
+    {
+     "text": "saksøker",
+     "start": 2.8,
+     "end": 3.15,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "krav",
+     "start": 3.2,
+     "end": 3.55,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "punktum",
+     "start": 3.6,
+     "end": 3.95,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ],
+   "text": "Etter § 271 har",
+   "tentative_text": "saksøker krav punktum",
+   "preview": "Etter § 271 har saksøker krav.",
+   "endpoint": false,
+   "audio_end": 4.0
+  },
+  {
+   "type": "final",
+   "committed": [
+    {
+     "text": "saksøker",
+     "start": 2.8,
+     "end": 3.15,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "krav",
+     "start": 3.2,
+     "end": 3.55,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "punktum",
+     "start": 3.6,
+     "end": 3.95,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ],
+   "tentative": [],
+   "text": "Etter § 271 har saksøker krav.",
+   "tentative_text": "",
+   "preview": "Etter § 271 har saksøker krav.",
+   "endpoint": true,
+   "audio_end": 4.0,
+   "words": [
+    {
+     "text": "Etter",
+     "start": 0.0,
+     "end": 0.35,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "paragraf",
+     "start": 0.4,
+     "end": 0.75,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "to",
+     "start": 0.8,
+     "end": 1.15,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "hundre",
+     "start": 1.2,
+     "end": 1.55,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "og",
+     "start": 1.6,
+     "end": 1.95,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "syttien",
+     "start": 2.0,
+     "end": 2.35,
+     "probability": 0.3,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": true
+    },
+    {
+     "text": "har",
+     "start": 2.4,
+     "end": 2.75,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "saksøker",
+     "start": 2.8,
+     "end": 3.15,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "krav",
+     "start": 3.2,
+     "end": 3.55,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    },
+    {
+     "text": "punktum",
+     "start": 3.6,
+     "end": 3.95,
+     "probability": 0.95,
+     "joined": false,
+     "revisions": 0,
+     "uncertain": false
+    }
+   ]
+  }
+ ]
+}

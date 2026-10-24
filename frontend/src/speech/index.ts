@@ -1,0 +1,10 @@
+export { EngineTransport, assertLoopback, browserTokenStore, DEFAULT_ENGINE_URL, TOKEN_STORAGE_KEY } from "./engine";
+export type { EngineHealth, PairResult, TokenStore } from "./engine";
+export { NsbTranscriber } from "./session";
+export type { SpeechTranscriber, SpeechStream, StreamFailure, TranscriptEvents, SocketFactory } from "./session";
+export { buildStartMessage, parseEngineMessage, ProtocolError, ENGINE_SAMPLE_RATE } from "./protocol";
+export type { EngineWord, EngineMessage } from "./protocol";
+export { applyMessage, markUncertain, EMPTY_TRANSCRIPT } from "./transcript";
+export type { Transcript, TextSpan } from "./transcript";
+export { startMicrophone, CaptureError } from "./capture";
+export type { MicrophoneCapture, CaptureFailure } from "./capture";
