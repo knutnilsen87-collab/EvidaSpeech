@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Starter mock-motoren på en egen port, kjører frontendens kontraktstest mot den, og stopper den.
 #>

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
   Starter den ekte talemotoren (nsb-engine fra NorwegianSpeechBase) for EvidaSpeech.
 

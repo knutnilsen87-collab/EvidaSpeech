@@ -2,6 +2,8 @@ import { defineConfig } from "vitest/config";
 import { readBuildStamp } from "./buildStamp";
 
 const stamp = readBuildStamp();
+// start.ps1 setter adressen fra evidaspeech.local.json. Standard: saksrom-api på 8080.
+const apiUrl = process.env.EVIDASPEECH_API_URL ?? "http://127.0.0.1:8080";
 
 export default defineConfig({
   define: {
@@ -14,7 +16,7 @@ export default defineConfig({
     port: 5174,
     strictPort: true,
     proxy: {
-      "/api": "http://127.0.0.1:8080"
+      "/api": apiUrl
     }
   },
   preview: { host: "127.0.0.1", port: 4174, strictPort: true },

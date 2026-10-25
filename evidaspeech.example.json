@@ -1,0 +1,31 @@
+{
+  "paths": {
+    "evidaNy2": "F:\\prosjekter_MAIN\\EvidaNy2.0",
+    "nsbRoot": "F:\\prosjekter_MAIN\\NorwegianSpeechBase",
+    "saksromJar": ".build\\saksrom-api\\evida-api.jar",
+    "javaHome": "",
+    "speechPython": "speech\\.venv\\Scripts\\python.exe",
+    "nsbPython": ""
+  },
+  "ports": {
+    "api": 8080,
+    "engine": 8766,
+    "frontend": 5174
+  },
+  "database": {
+    "url": "jdbc:postgresql://127.0.0.1:5432/evida",
+    "user": "evida",
+    "passwordEnv": "EVIDA_DATABASE_PASSWORD",
+    "password": ""
+  },
+  "engine": {
+    "model": "nb-whisper-large-distil-turbo-beta",
+    "modelDir": "",
+    "device": "cuda"
+  },
+  "timeoutsSeconds": {
+    "api": 150,
+    "engine": 300,
+    "frontend": 60
+  }
+}

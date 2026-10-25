@@ -17,3 +17,9 @@ speech/.data/
 speech/recordings/
 *.wav
 *.webm
+
+# Oppstart (start.ps1): lokal konfig, logger, kjøretilstand og saksrom-api-bygg
+evidaspeech.local.json
+logs/
+.data/
+.build/

@@ -4,7 +4,8 @@
  */
 
 export const TOKEN_STORAGE_KEY = "evidaspeech.nsbEngineToken";
-export const DEFAULT_ENGINE_URL = "http://127.0.0.1:8766";
+// start.ps1 setter VITE_NSB_ENGINE_URL fra evidaspeech.local.json. Adressen sjekkes uansett med assertLoopback.
+export const DEFAULT_ENGINE_URL: string = import.meta.env.VITE_NSB_ENGINE_URL ?? "http://127.0.0.1:8766";
 
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
 
