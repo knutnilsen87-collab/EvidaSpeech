@@ -1,10 +1,12 @@
 ﻿<#
 .SYNOPSIS
-  Stopper det start.ps1 startet (frontend, talemotor, saksrom-api), i motsatt rekkefølge.
+  Stopper det start.ps1 startet (frontend, talemotor, saksrom-api, database), i motsatt rekkefølge.
 
 .DESCRIPTION
-  Bare prosessene som står i EvidaSpeech\.data\running.json, og bare hvis PID og
-  starttidspunkt stemmer. Andre prosesser på de samme portene røres ikke.
+  Bare det som står i EvidaSpeech\.data\running.json: prosesser hvis PID og
+  starttidspunkt stemmer, og databasecontaineren bare hvis start.ps1 startet den
+  (kjørte den fra før, for eksempel for EvidaNy2.0, får den stå). Andre prosesser
+  på de samme portene røres ikke.
 #>
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'scripts\common.ps1')
@@ -16,9 +18,9 @@ if (-not $entries) {
 }
 Write-Host 'Stopper EvidaSpeech:'
 Stop-Recorded
-$left = @($entries | Where-Object { Get-RecordedProcess $_ })
+$left = @($entries | Where-Object { Test-EntryAlive $_ })
 if ($left) {
-    Write-Host "Fortsatt i gang: $(($left | ForEach-Object { "$($_.name) (pid $($_.pid))" }) -join ', ')" -ForegroundColor Red
+    Write-Host "Fortsatt i gang: $(($left | ForEach-Object name) -join ', ')" -ForegroundColor Red
     exit 1
 }
 Write-Host 'Alt er stoppet.' -ForegroundColor Green

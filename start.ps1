@@ -152,7 +152,7 @@ Write-Host ''
 $problems = New-Object System.Collections.Generic.List[object]
 function Add-Problem($what, $fix) { $problems.Add([pscustomobject]@{ what = $what; fix = $fix }) }
 
-$already = @(Read-Running | Where-Object { Get-RecordedProcess $_ })
+$already = @(Read-Running | Where-Object { Test-EntryAlive $_ })
 if ($already) {
     Add-Problem "EvidaSpeech kjører allerede ($(($already | ForEach-Object name) -join ', '))." 'Stopp først med stop.cmd (eller stop.ps1).'
 }
@@ -243,13 +243,34 @@ if (-not (Test-Path $jar)) {
     Add-Problem "Fant ikke ferdigbygd saksrom-api ($jar)." ("Bygg fra en kopi under EvidaSpeech\.build med scripts\build-saksrom.ps1 (skriver ingenting i EvidaNy2.0), " +
         'eller sett paths.saksromJar til en ferdig jar.')
 }
+# Commit jaren er bygd fra (fra build-saksrom.ps1), vises i statuslinjen og build-stempelet.
+$saksromInfo = Get-SaksromInfo $jar
+$saksromCommit = if ($saksromInfo) { "$($saksromInfo.commit)" } else { '' }
 
-# PostgreSQL
+# PostgreSQL. Med database.docker startes EvidaNy2.0 sin utviklingsdatabase (container) i
+# oppstarten, hvis den ikke svarer allerede. Docker Desktop startes eller installeres ikke.
 $dbUrl = "$($cfg.database.url)"
-if ($dbUrl -match '^jdbc:postgresql://([^:/]+)(?::(\d+))?/') {
-    $dbHost = $Matches[1]; $dbPort = if ($Matches[2]) { [int]$Matches[2] } else { 5432 }
+$dock = $cfg.database.docker
+$composeFile = if ($dock -and $dock.composeFile) {
+    if ([IO.Path]::IsPathRooted($dock.composeFile)) { $dock.composeFile } else { Join-Path $evidaNy $dock.composeFile }
+} else { '' }
+$startDb = $false
+if ($dbUrl -match '^jdbc:postgresql://([^:/]+)(?::(\d+))?/([^?;]+)') {
+    $dbHost = $Matches[1]; $dbPort = if ($Matches[2]) { [int]$Matches[2] } else { 5432 }; $dbName = $Matches[3]
     $pg = Test-Postgres $dbHost $dbPort
-    if ($pg) {
+    if ($pg -and $composeFile) {
+        if (-not (Test-Path $composeFile)) {
+            Add-Problem "Fant ikke compose-filen for databasen ($composeFile)." 'Sett database.docker.composeFile, eller fjern database.docker og bruk en installert PostgreSQL.'
+        } elseif (-not (Get-Command docker.exe -ErrorAction SilentlyContinue)) {
+            Add-Problem "PostgreSQL $pg på ${dbHost}:$dbPort, og Docker er ikke installert." 'start.ps1 installerer ingenting. Installer Docker Desktop, eller installer PostgreSQL 16 og fjern database.docker.'
+        } elseif (-not (Invoke-Docker @('info', '--format', '{{.ServerVersion}}')).ok) {
+            Add-Problem 'Docker Desktop kjører ikke, så databasen kan ikke startes.' 'Start Docker Desktop, vent til den er klar, og prøv igjen. start.ps1 starter ikke Docker Desktop selv.'
+        } elseif (Test-ContainerRunning $dock.container) {
+            Add-Problem "Containeren $($dock.container) kjører, men PostgreSQL $pg på ${dbHost}:$dbPort." "Se docker logs $($dock.container)."
+        } else {
+            $startDb = $true
+        }
+    } elseif ($pg) {
         $services = @(Get-Service -ErrorAction SilentlyContinue | Where-Object { $_.Name -like 'postgres*' })
         $docker = Get-Command docker.exe -ErrorAction SilentlyContinue
         $fix = if ($services) {
@@ -293,6 +314,34 @@ $script:running = @()
 $current = $null
 $done = $false
 try {
+    # 0. database (bare hvis den ikke svarte i sjekken og database.docker er satt)
+    if ($startDb) {
+        $current = 'postgres'
+        Write-Host ("  {0,-12} starter container {1}" -f 'postgres', $dock.container)
+        # Samme compose-fil og prosjekt som EvidaNy2.0 bruker; filen leses bare. --no-recreate: en
+        # eksisterende container (og volumet med data) brukes som den er.
+        $r = Invoke-Docker @('compose', '-f', $composeFile, 'up', '-d', '--no-recreate', $dock.service)
+        New-Item -ItemType Directory -Force $LogDir | Out-Null
+        $r.output | Set-Content (Join-Path $LogDir 'postgres.out.log') -Encoding UTF8
+        if (-not $r.ok) { throw "docker compose up feilet." }
+        $script:running += [pscustomobject]@{ name = 'postgres'; kind = 'docker'; container = $dock.container; url = "${dbHost}:$dbPort" }
+        Save-Running $script:running
+        $t0 = Get-Date; $timeout = [int]$cfg.timeoutsSeconds.database
+        Write-Host ("  {0,-12} venter på pg_isready og {1}:{2} " -f 'postgres', $dbHost, $dbPort) -NoNewline
+        while ($true) {
+            $ready = (Invoke-Docker @('exec', $dock.container, 'pg_isready', '-U', "$($cfg.database.user)", '-d', $dbName)).ok
+            if ($ready -and -not (Test-Postgres $dbHost $dbPort)) { break }
+            if (((Get-Date) - $t0).TotalSeconds -ge $timeout) {
+                Write-Host ''
+                (Invoke-Docker @('logs', '--tail', '40', $dock.container)).output | Add-Content (Join-Path $LogDir 'postgres.out.log') -Encoding UTF8
+                throw "PostgreSQL ble ikke klar innen $timeout s."
+            }
+            Write-Host '.' -NoNewline
+            Start-Sleep -Seconds 1
+        }
+        Write-Host ("klar ({0:N0} s)" -f ((Get-Date) - $t0).TotalSeconds) -ForegroundColor Green
+    }
+
     # a. saksrom-api
     $current = 'saksrom-api'
     $apiData = Join-Path $StateDir 'saksrom'
@@ -324,7 +373,7 @@ try {
 
     # c. frontend
     $current = 'frontend'
-    $frontEnv = @{ EVIDASPEECH_API_URL = $apiUrl; VITE_NSB_ENGINE_URL = $engineUrl }
+    $frontEnv = @{ EVIDASPEECH_API_URL = $apiUrl; VITE_NSB_ENGINE_URL = $engineUrl; EVIDASPEECH_SAKSROM_COMMIT = $saksromCommit }
     $p = Start-Tracked 'frontend' $node @($viteJs, '--host', '127.0.0.1', '--port', "$frontPort", '--strictPort') $frontendDir $frontEnv $frontUrl
     $null = Wait-Healthy 'frontend' $p $frontUrl { param($r) $true } ([int]$cfg.timeoutsSeconds.frontend)
     $done = $true
@@ -345,7 +394,9 @@ if (-not $done) { exit 1 }
 if (-not $NoBrowser) { Start-Process $frontUrl }
 $speechText = if (-not $speech) { 'av (-NoSpeech)' } else { "$($engineHealth.model) · $($engineHealth.device)" }
 Write-Host ''
-Write-Host ("EvidaSpeech kjører · saksrom-api :{0} · tale: {1} · frontend {2} · build {3}" -f $apiPort, $speechText, $frontUrl, (Get-BuildStamp)) -ForegroundColor Green
+$apiText = if ($saksromCommit) { "saksrom-api :$apiPort ($($saksromCommit.Substring(0, 10)))" } else { "saksrom-api :$apiPort (ukjent bygg)" }
+$dbText = if ($startDb) { "db $($dock.container)" } else { "db ${dbHost}:$dbPort" }
+Write-Host ("EvidaSpeech kjører · {0} · {1} · tale: {2} · frontend {3} · build {4}" -f $dbText, $apiText, $speechText, $frontUrl, (Get-BuildStamp)) -ForegroundColor Green
 if ($speech) {
     $pairing = Get-Content (Join-Path $LogDir 'talemotor.out.log') -Encoding UTF8 -ErrorAction SilentlyContinue | Where-Object { $_ -match 'Paringskode' } | Select-Object -First 1
     if ($pairing) { Write-Host "  $($pairing.Trim())  (trengs bare første gang nettleseren kobles til motoren)" }

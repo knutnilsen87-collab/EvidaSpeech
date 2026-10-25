@@ -16,7 +16,12 @@
     "url": "jdbc:postgresql://127.0.0.1:5432/evida",
     "user": "evida",
     "passwordEnv": "EVIDA_DATABASE_PASSWORD",
-    "password": ""
+    "password": "",
+    "docker": {
+      "composeFile": "backend\\saksrom-api\\docker-compose.yml",
+      "service": "postgres",
+      "container": "evida-postgres"
+    }
   },
   "engine": {
     "model": "nb-whisper-large-distil-turbo-beta",
@@ -24,6 +29,7 @@
     "device": "cuda"
   },
   "timeoutsSeconds": {
+    "database": 90,
     "api": 150,
     "engine": 300,
     "frontend": 60

@@ -23,3 +23,6 @@ evidaspeech.local.json
 logs/
 .data/
 .build/
+
+# Testdiktat (fase 2b): lydfiler blir på maskinen
+testdata/audio/

@@ -41,9 +41,18 @@ Feiler en tjeneste, stoppes de som allerede kjører, og de siste linjene fra log
 
 Konfigurasjonen inneholder stier, porter, databaseadresse og modell (`engine.model`, eller en egen `engine.modelDir`). Databasepassordet står ikke i skriptene. Det leses fra miljøvariabelen i `database.passwordEnv` (standard `EVIDA_DATABASE_PASSWORD`) eller fra `database.password` i den lokale filen. Er ingen av dem satt, bruker saksrom-api sin egen standard for lokal utvikling.
 
-**Ingenting skrives i EvidaNy2.0 eller NorwegianSpeechBase.** Derfor bygger ikke `start.ps1` saksrom-api, siden Maven ville skrevet `target\` i EvidaNy2.0. Den trenger en ferdig jar (`paths.saksromJar`). `scripts\build-saksrom.ps1` lager den ved å kopiere `pom.xml`, Maven-wrapperen og `src\main` til `.build\saksrom-api\kilde` og bygge der. Hvilken commit jaren er bygd fra, står i `.build\saksrom-api\KILDE.txt`.
+**Ingenting skrives i EvidaNy2.0 eller NorwegianSpeechBase.** Derfor bygger ikke `start.ps1` saksrom-api, siden Maven ville skrevet `target\` i EvidaNy2.0. Den trenger en ferdig jar (`paths.saksromJar`), som lages slik:
 
-**PostgreSQL** installeres ikke av skriptet. saksrom-api trenger PostgreSQL 16 med databasen og brukeren i `database.url` / `database.user`. Den bruker samme database som EvidaNy2.0 hvis adressen er den samme, og Flyway-migreringene fra saksrom-api kjøres på den. EvidaNy2.0 sin utviklingsdatabase i Docker kan startes med `docker compose -f F:\prosjekter_MAIN\EvidaNy2.0\backend\saksrom-api\docker-compose.yml up -d postgres`.
+```powershell
+.\scripts\build-saksrom.ps1             # siste commit (HEAD) i EvidaNy2.0
+.\scripts\build-saksrom.ps1 -Ref <commit>
+```
+
+Koden hentes med `git archive` av committen, ikke fra arbeidstreet, så ukommittert arbeid i EvidaNy2.0 kommer ikke med. `git archive` bare leser repoet. Bygget skjer i `.build\saksrom-api\kilde` (gitignored). Commit og SHA-256 for jaren står i `.build\saksrom-api\evida-api.kilde.json`. `start.ps1` viser committen i statuslinjen, og appen viser den i build-stempelet («saksrom-api 3a3d82ebea»). Er jaren endret etter bygget, eller mangler filen, står det «ukjent bygg».
+
+**PostgreSQL:** Med `database.docker` (standard) bruker `start.ps1` utviklingsdatabasen til EvidaNy2.0: containeren `evida-postgres` fra `backend\saksrom-api\docker-compose.yml` der, med samme compose-prosjekt og volum. Svarer ikke databasen, startes containeren (`docker compose up -d --no-recreate postgres`), og skriptet venter på `pg_isready` før saksrom-api startes. `stop.ps1` stopper containeren bare hvis `start.ps1` startet den; data i volumet beholdes. Docker Desktop startes og installeres ikke. Kjører den ikke, stopper `start.ps1` med beskjed om det. Uten `database.docker` må en installert PostgreSQL 16 svare på `database.url`.
+
+EvidaSpeech og EvidaNy2.0 deler da database, og Flyway i saksrom-api validerer og eventuelt migrerer skjemaet i den.
 
 ## Kom i gang (hver del for seg)
 

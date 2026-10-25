@@ -158,4 +158,12 @@ describe("byggstempel", () => {
       "abc1234567 · 2026-10-24 09:05 UTC"
     );
   });
+
+  it("viser commit saksrom-api er bygd fra, eller at den er ukjent", () => {
+    const base = { commit: "abc1234567", dirty: false, time: "2026-10-24T09:05:00.000Z" };
+    expect(formatBuildStamp({ ...base, backend: "3a3d82ebea20f678c0188331ad9c9f0703376daf" })).toBe(
+      "abc1234567 · 2026-10-24 09:05 UTC · saksrom-api 3a3d82ebea"
+    );
+    expect(formatBuildStamp({ ...base, backend: null })).toBe("abc1234567 · 2026-10-24 09:05 UTC · saksrom-api ukjent bygg");
+  });
 });

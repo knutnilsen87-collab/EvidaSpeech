@@ -39,6 +39,23 @@ function Save-Running($entries) {
     }
 }
 
+function Invoke-Docker([string[]]$dockerArgs) {
+    $ErrorActionPreference = 'Continue'
+    $o = & docker.exe @dockerArgs 2>&1 | ForEach-Object { "$_" }
+    return [pscustomobject]@{ ok = ($LASTEXITCODE -eq 0); output = @($o) }
+}
+
+function Test-ContainerRunning([string]$name) {
+    $r = Invoke-Docker @('inspect', '--format', '{{.State.Running}}', $name)
+    return $r.ok -and ("$($r.output)".Trim() -eq 'true')
+}
+
+# Kjører det start.ps1 startet fortsatt? Prosesser sjekkes på PID og starttid, containere på navn.
+function Test-EntryAlive($entry) {
+    if ($entry.kind -eq 'docker') { return Test-ContainerRunning $entry.container }
+    return [bool](Get-RecordedProcess $entry)
+}
+
 # Prosessen med denne PID-en er den start.ps1 startet (ikke en senere prosess som har fått samme PID).
 function Get-RecordedProcess($entry) {
     $p = Get-Process -Id $entry.pid -ErrorAction SilentlyContinue
@@ -54,6 +71,16 @@ function Stop-Recorded($Entries = $null, [switch]$Quiet) {
     $entries = if ($null -ne $Entries) { @($Entries) } else { @(Read-Running) }
     [array]::Reverse($entries)
     foreach ($e in $entries) {
+        if ($e.kind -eq 'docker') {
+            # Bare containere start.ps1 selv startet, står i listen. Data i volumet beholdes.
+            if (-not (Test-ContainerRunning $e.container)) {
+                if (-not $Quiet) { Write-Host ("  {0,-12} kjørte ikke lenger" -f $e.name) }
+                continue
+            }
+            $r = Invoke-Docker @('stop', $e.container)
+            if (-not $Quiet) { Write-Host ("  {0,-12} {1} (container {2})" -f $e.name, $(if ($r.ok) { 'stoppet' } else { "ble ikke stoppet: $($r.output)" }), $e.container) }
+            continue
+        }
         $p = Get-RecordedProcess $e
         if (-not $p) {
             if (-not $Quiet) { Write-Host ("  {0,-12} kjørte ikke lenger" -f $e.name) }
@@ -75,6 +102,18 @@ function Show-LogTail([string]$name, [int]$lines = 25) {
             Get-Content $f -Tail $lines -Encoding UTF8 | ForEach-Object { Write-Host "  $_" }
         }
     }
+}
+
+# Opphavet til saksrom-api-jaren ligger ved siden av den: evida-api.jar -> evida-api.kilde.json.
+function Get-SaksromInfoPath([string]$jar) { return [IO.Path]::ChangeExtension($jar, '.kilde.json') }
+
+# Commit jaren er bygd fra, men bare hvis jaren er den samme som ble bygd (SHA-256 stemmer).
+function Get-SaksromInfo([string]$jar) {
+    $f = Get-SaksromInfoPath $jar
+    if (-not (Test-Path $f) -or -not (Test-Path $jar)) { return $null }
+    $info = Get-Content $f -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($info.jarSha256 -ne (Get-FileHash $jar -Algorithm SHA256).Hash.ToLower()) { return $null }
+    return $info
 }
 
 function Get-BuildStamp {
